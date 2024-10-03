@@ -215,33 +215,3 @@ export const AddProductButton = styled.button`
     background-color: var(--primary-color-dark);
   }
 `;
-
-export const LoginButton = styled.button`
-  outline: none;
-  border: none;
-  cursor: pointer;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  width: auto;
-  min-width: auto;
-  max-width: auto;
-  height: auto;
-  min-height: auto;
-  max-height: auto;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: 0.5rem 1rem;
-  background-color: var(--danger-color);
-  border-radius: var(--border-radius-md);
-  color: #ffffff;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.25s ease;
-  gap: 0.25rem;
-
-  &:hover {
-    background-color: var(--danger-color-dark);
-  }
-`;
