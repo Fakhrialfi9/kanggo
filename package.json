@@ -1,0 +1,24 @@
+{
+  "name": "kanggo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vue-styled-components/core": "^1.7.3",
+    "lucide-react": "^0.447.0",
+    "lucide-vue-next": "^0.447.0",
+    "vue": "^3.5.10",
+    "vue-router": "4",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.2",
+    "vite": "^5.4.1",
+    "vite-plugin-vuetify": "^2.0.4"
+  }
+}
