@@ -30,6 +30,48 @@ export const Content = styled.div`
   align-items: flex-start;
   margin: 0 auto;
   padding: 7.5rem 0;
+  gap: 2.5rem;
+`;
+
+export const FormSearchProduct = styled.form`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: auto;
+  max-height: auto;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0;
+  gap: 1rem;
+`;
+
+export const TitleFormSearchProduct = styled.h5`
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+`;
+
+export const SearchBarsProduct = styled.input`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  width: 20rem;
+  min-width: auto;
+  max-width: 20rem;
+  height: auto;
+  min-height: auto;
+  max-height: auto;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-md);
+  border: 0.085rem solid var(--diver-color-solid-500);
 `;
 
 export const WrapCardProduct = styled.div`

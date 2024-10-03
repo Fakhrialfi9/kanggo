@@ -8,6 +8,9 @@
   import {
     Main,
     Content,
+    FormSearchProduct,
+    TitleFormSearchProduct,
+    SearchBarsProduct,
     WrapCardProduct,
     CardProduct,
     CardImageProduct,
@@ -22,7 +25,7 @@
 
   const products = ref<ModelsSchemaProduct[]>([]);
   const page = ref(1);
-  const perPage = 5;
+  const perPage = 10;
   const isLoading = ref(false);
 
   const loadProducts = async () => {
@@ -34,23 +37,10 @@
       const paginatedProducts = allProducts.slice((page.value - 1) * perPage, page.value * perPage);
       products.value = [...products.value, ...paginatedProducts];
       page.value++;
-    } catch (error) {
-      console.error("Product Error:", error);
     } finally {
       isLoading.value = false;
     }
   };
-
-  const { handleDelete } = useHandleDelete(products);
-  const { handleUpdate } = useHandleUpdate(products);
-
-  const updateProduct = async (id: number, updatedData: ModelsSchemaProduct) => {
-    await handleUpdate(id, updatedData);
-  };
-
-  onMounted(() => {
-    loadProducts();
-  });
 
   const handleScroll = () => {
     const bottomOffset = 100;
@@ -61,13 +51,28 @@
     }
   };
 
+  const updateProduct = async (id: number, updatedData: ModelsSchemaProduct) => {
+    await handleUpdate(id, updatedData);
+  };
+
+  const { handleDelete } = useHandleDelete(products);
+  const { handleUpdate } = useHandleUpdate(products);
+
   window.addEventListener("scroll", handleScroll);
+
+  onMounted(() => {
+    loadProducts();
+  });
 </script>
 
 <template>
   <Main>
     <Container>
       <Content>
+        <FormSearchProduct>
+          <TitleFormSearchProduct>Search Products</TitleFormSearchProduct>
+          <SearchBarsProduct autocomplete="off" type="search" name="search" placeholder="Search Product" />
+        </FormSearchProduct>
         <WrapCardProduct>
           <CardProduct v-for="product in products" :key="product.id">
             <CardImageProduct>
