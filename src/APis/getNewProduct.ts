@@ -1,21 +1,31 @@
-import { ModelsSchemaProduct } from "../models/productModels.ts";
+import axios from "axios";
+import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 
-export const AddProduct = async (newProduct: ModelsSchemaProduct): Promise<void> => {
+export const AddProduct = async (newProduct: ModelsSchemaProduct): Promise<ModelsSchemaProduct> => {
   try {
-    const response = await fetch("https://fakestoreapi.com/products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await axios.post(
+      "https://fakestoreapi.com/products",
+      {
+        title: newProduct.title,
+        description: newProduct.description,
+        price: newProduct.price,
+        category: newProduct.category,
+        image: newProduct.image,
       },
-      body: JSON.stringify(newProduct),
-    });
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
 
-    if (!response.ok) {
+    if (response.status !== 201) {
       throw new Error(`Failed to add product`);
     }
 
-    const addedProduct = await response.json();
+    const addedProduct: ModelsSchemaProduct = response.data;
     console.log(`Product added successfully:`, addedProduct);
+    return addedProduct;
   } catch (error) {
     console.error(`Error adding product:`, error);
     throw error;

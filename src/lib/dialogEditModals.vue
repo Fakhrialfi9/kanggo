@@ -12,14 +12,18 @@
     CancelProductButton,
     SaveEditProductButton,
   } from "../assets/style/lib/dialogupdatemodalsStyle.js";
-  import { defineProps, defineEmits, computed } from "vue";
-  import { ModelsSchemaProduct } from "../models/productModels.js";
+  import { defineProps, defineEmits, computed, ref } from "vue";
+  import { ModelsSchemaProduct } from "../models/modelSchemaProduct.js";
+
+  const productForm = ref<HTMLElement | null>(null);
 
   const props = defineProps<{
     isVisible: boolean;
     message: string;
-    product?: ModelsSchemaProduct;
+    product?: ModelsSchemaProduct | null;
   }>();
+
+  const emit = defineEmits(["confirm", "cancel"]);
 
   const productTitle = computed({
     get: () => props.product?.title || "",
@@ -39,15 +43,21 @@
     },
   });
 
-  const emit = defineEmits(["confirm", "cancel"]);
-
   const cancel = () => {
     emit("cancel");
   };
 
-  const confirm = ($event: MouseEvent) => {
-    $event.preventDefault();
-    emit("confirm");
+  const confirm = () => {
+    const updatedProduct: ModelsSchemaProduct = {
+      id: props.product!.id,
+      title: productTitle.value,
+      description: productDescription.value,
+      price: 0,
+      category: "",
+      image: "",
+    };
+
+    emit("confirm", updatedProduct);
   };
 </script>
 
@@ -59,13 +69,18 @@
         <SubheadlineDiaglogModals>{{ message }}</SubheadlineDiaglogModals>
       </HeaderDiaglogModals>
 
-      <FormEditModalsProduct>
-        <InputEditModalsProduct v-model="productTitle" type="text" name="title" placeholder="Edit Title" autocomplete="off" />
-        <InputDescriptionEditModalsProduct v-model="productDescription" name="description" placeholder="Edit Description" autocomplete="off" />
+      <FormEditModalsProduct ref="productForm" @submit.prevent="confirm">
+        <InputEditModalsProduct required v-model="productTitle" type="text" name="title" placeholder="Edit Title" autocomplete="off" />
+        <InputDescriptionEditModalsProduct
+          required
+          v-model="productDescription"
+          name="description"
+          placeholder="Edit Description"
+          autocomplete="off" />
 
         <CallToActionDiaglogModals>
-          <CancelProductButton @click="cancel">Cancel</CancelProductButton>
-          <SaveEditProductButton @click="confirm">Save Edit</SaveEditProductButton>
+          <CancelProductButton @click="cancel" type="button">Cancel</CancelProductButton>
+          <SaveEditProductButton type="submit">Save Edit</SaveEditProductButton>
         </CallToActionDiaglogModals>
       </FormEditModalsProduct>
     </DiaglogModals>

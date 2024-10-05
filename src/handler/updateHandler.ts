@@ -1,25 +1,13 @@
-import { ModelsSchemaProduct } from "../models/productModels.ts";
+import { UpdateProduct } from "../APis/updateProduct";
+import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 
-export const HandleUpdate = async (products: any, id: number, updatedData: ModelsSchemaProduct) => {
+export const HandleUpdate = async (products: ModelsSchemaProduct[], id: number, updatedProduct: ModelsSchemaProduct) => {
   try {
-    const response = await fetch(`https://fakestoreapi.com/products/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedData),
-    });
+    const result = await UpdateProduct(id, updatedProduct);
 
-    if (!response.ok) {
-      throw new Error(`Failed to update product with ID ${id}`);
-    }
-
-    const updatedProduct = await response.json();
-    const productIndex = products.value.findIndex((product: ModelsSchemaProduct) => product.id === id);
-    if (productIndex !== -1) {
-      products.value[productIndex] = updatedProduct;
-    }
+    return result;
   } catch (error) {
-    console.error("Error updating product:", error);
+    console.error(`Error saat mengupdate produk dengan ID ${id}:`, error);
+    throw error;
   }
 };

@@ -1,10 +1,6 @@
 <script setup lang="ts">
-  import { ref, watch, onMounted } from "vue";
-  import { ModelsSchemaProduct } from "../../models/productModels.ts";
-  import { GetAllProduct } from "../../APis/getAllProduct.ts";
-  import { searchProduct } from "../../APis/searchProduct.ts";
-  import { HandleDelete } from "../../handler/deleteHandler.ts";
-  import { HandleUpdate } from "../../handler/updateHandler.ts";
+  import { onMounted, computed } from "vue";
+  import { useStore } from "vuex";
   import { Container } from "../../base/style/containerStyle.js";
   import {
     Main,
@@ -26,99 +22,31 @@
   import DeleteModal from "../../lib/dialogDeleteModals.vue";
   import EditModal from "../../lib/dialogEditModals.vue";
 
-  const products = ref<ModelsSchemaProduct[]>([]);
-  const productToEdit = ref<ModelsSchemaProduct | null>(null);
-  const productToDelete = ref<number | null>(null);
-  const searchQuery = ref("");
-  const modaDeletelMessage = ref("");
-  const modaUpdatelMessage = ref("");
-  const isLoading = ref(false);
-  const isDeleteModalOpen = ref(false);
-  const isEditModalOpen = ref(false);
-  const page = ref(1);
-  const perPage = 10;
+  const store = useStore();
 
-  const loadProducts = async () => {
-    if (isLoading.value) return;
-    isLoading.value = true;
+  const searchQuery = computed(() => store.state.searchQuery);
+  const products = computed(() => store.getters.filteredProducts);
+  const isDeleteModalOpen = computed(() => store.state.isDeleteModalOpen);
+  const isEditModalOpen = computed(() => store.state.isEditModalOpen);
 
-    try {
-      const allProducts = await GetAllProduct();
-      const paginatedProducts = allProducts.slice((page.value - 1) * perPage, page.value * perPage);
-      products.value = [...products.value, ...paginatedProducts];
-      page.value++;
-    } finally {
-      isLoading.value = false;
-    }
+  const openEditModal = (product, productName: string) => {
+    store.commit("SET_PRODUCT_TO_EDIT", product);
+    store.commit("SET_MODAL_UPDATE_MESSAGE", `Are you sure you want to Edit "${productName}"? .`);
+    store.commit("TOGGLE_EDIT_MODAL", true);
   };
 
-  const searchProducts = async () => {
-    if (!searchQuery.value) {
-      products.value = [];
-      await loadProducts();
-    } else {
-      try {
-        const searchResults = await searchProduct(searchQuery.value);
-        products.value = searchResults;
-      } catch (error) {
-        console.error("Product search error:", error);
-      }
-    }
+  const openDeleteModla = (productId: number, productName: string) => {
+    store.commit("SET_PRODUCT_TO_DELETE", productId);
+    store.commit(
+      "SET_MODAL_DELETE_MESSAGE",
+      `Are you sure you want to delete "${productName}"? If you want to delete, click Delete; if not, click Cancel.`,
+    );
+    store.commit("TOGGLE_DELETE_MODAL", true);
   };
 
-  watch(searchQuery, searchProducts);
-
-  const handleScroll = () => {
-    const bottomOffset = 100;
-    const isNearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - bottomOffset;
-
-    if (isNearBottom) {
-      loadProducts();
-    }
-  };
-
-  const openEditModal = (product: ModelsSchemaProduct) => {
-    productToEdit.value = { ...product };
-    modaUpdatelMessage.value = `Edit "${product.title}"`;
-    isEditModalOpen.value = true;
-  };
-
-  const confirmEdit = async (updatedProduct: ModelsSchemaProduct) => {
-    try {
-      await HandleUpdate(products, updatedProduct.id, updatedProduct);
-    } catch (error) {
-      console.error("Error updating product:", error);
-    }
-    isEditModalOpen.value = false;
-  };
-
-  const cancelEdit = () => {
-    isEditModalOpen.value = false;
-  };
-
-  const openDeleteModal = (id: number, productName: string) => {
-    productToDelete.value = id;
-    modaDeletelMessage.value = `Are you sure you want to delete "${productName}"? If you want to delete, click Delete if not, click Cancel.`;
-    isDeleteModalOpen.value = true;
-  };
-
-  const confirmDelete = async () => {
-    if (productToDelete.value !== null) {
-      await HandleDelete(products, productToDelete.value);
-      productToDelete.value = null;
-      isDeleteModalOpen.value = false;
-    }
-  };
-
-  const cancelDelete = () => {
-    productToDelete.value = null;
-    isDeleteModalOpen.value = false;
-  };
-
-  window.addEventListener("scroll", handleScroll);
-
+  // Load products on mount
   onMounted(() => {
-    loadProducts();
+    store.dispatch("loadProducts");
   });
 </script>
 
@@ -127,36 +55,40 @@
     <Container>
       <Content>
         <FormSearchProduct>
-          <TitleFormSearchProduct>Search Products</TitleFormSearchProduct>
-          <SearchBarsProduct v-model="searchQuery" autocomplete="off" type="search" name="search" placeholder="Search Product" />
+          <TitleFormSearchProduct>Product List</TitleFormSearchProduct>
+          <SearchBarsProduct v-model="searchQuery" type="text" placeholder="Search product..." />
         </FormSearchProduct>
 
         <WrapCardProduct>
           <CardProduct v-for="product in products" :key="product.id">
             <CardImageProduct>
-              <ImageProduct :src="product.image" alt="Product Image" />
+              <ImageProduct :src="product.image" :alt="product.title" />
             </CardImageProduct>
-
             <CardInformationProduct>
               <CardTitleProduct>{{ product.title }}</CardTitleProduct>
               <CardDescriptionProduct>{{ product.description }}</CardDescriptionProduct>
+              <CardButtonCallToActionProduct>
+                <EditProductButton @click="openEditModal(product.id, product.title)">Edit</EditProductButton>
+                <DeleteProductButton @click="() => openDeleteModla(product.id, product.title)">Delete</DeleteProductButton>
+              </CardButtonCallToActionProduct>
             </CardInformationProduct>
-
-            <CardButtonCallToActionProduct>
-              <EditProductButton @click="openEditModal(product)">Edit</EditProductButton>
-              <DeleteProductButton @click="openDeleteModal(product.id, product.title)">Delete</DeleteProductButton>
-            </CardButtonCallToActionProduct>
           </CardProduct>
         </WrapCardProduct>
-
-        <DeleteModal :isVisible="isDeleteModalOpen" :message="modaDeletelMessage" @confirm="confirmDelete" @cancel="cancelDelete" />
-        <EditModal
-          :isVisible="isEditModalOpen"
-          :message="modaUpdatelMessage"
-          :product="productToEdit || undefined"
-          @confirm="confirmEdit"
-          @cancel="cancelEdit" />
       </Content>
+
+      <DeleteModal
+        :isVisible="isDeleteModalOpen"
+        :message="store.state.modalDeleteMessage"
+        :productId="store.state.productToDelete"
+        @confirm="store.dispatch('confirmDelete', store.state.productToDelete)"
+        @cancel="store.commit('TOGGLE_DELETE_MODAL', false)" />
+
+      <EditModal
+        :isVisible="isEditModalOpen"
+        :message="store.state.modalUpdateMessage"
+        :product="store.state.productToEdit"
+        @confirm="store.dispatch('confirmEdit', store.state.productToEdit)"
+        @cancel="store.commit('TOGGLE_EDIT_MODAL', false)" />
     </Container>
   </Main>
 </template>

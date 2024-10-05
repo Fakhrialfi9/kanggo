@@ -53,7 +53,7 @@ export const HeaderDiaglogModals = styled.div`
   min-height: auto;
   max-height: auto;
   justify-content: center;
-  align-items: flex-start;
+  align-items: flex-start !important;
   align-content: center;
   margin: 0 auto;
   padding: 0;

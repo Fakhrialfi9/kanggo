@@ -14,16 +14,16 @@
   const props = defineProps({
     isVisible: Boolean,
     message: String,
+    productId: Number,
   });
+  const emit = defineEmits();
 
-  const emit = defineEmits(["confirm", "cancel"]);
-
-  const cancel = () => {
+  const cancelDelete = () => {
     emit("cancel");
   };
 
-  const confirm = () => {
-    emit("confirm");
+  const confirmDelete = () => {
+    emit("confirm", props.productId);
   };
 </script>
 
@@ -31,13 +31,12 @@
   <Modals v-if="isVisible">
     <DiaglogModals>
       <HeaderDiaglogModals>
-        <TitleDiaglogModals>Are you sure you want to delete this product?</TitleDiaglogModals>
+        <TitleDiaglogModals>Delete Confirmation</TitleDiaglogModals>
         <SubheadlineDiaglogModals>{{ message }}</SubheadlineDiaglogModals>
       </HeaderDiaglogModals>
-
       <CallToActionDiaglogModals>
-        <CancelProductButton @click="cancel">Cancel</CancelProductButton>
-        <DeleteProductButton @click="confirm">Delete</DeleteProductButton>
+        <CancelProductButton @click="cancelDelete">Cancel</CancelProductButton>
+        <DeleteProductButton @click="confirmDelete">Delete</DeleteProductButton>
       </CallToActionDiaglogModals>
     </DiaglogModals>
   </Modals>

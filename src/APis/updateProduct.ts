@@ -1,20 +1,30 @@
-export const UpdateProduct = async (id: number, updatedProduct: any): Promise<void> => {
+import axios from "axios";
+import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
+
+export const UpdateProduct = async (id: number, updatedProduct: ModelsSchemaProduct): Promise<ModelsSchemaProduct> => {
   try {
-    const response = await fetch(`https://fakestoreapi.com/products/${id}`, {
-      method: "PUT",
+    if (!updatedProduct.title || !updatedProduct.description) {
+      throw new Error("Missing required fields: title and description are required.");
+    }
+
+    const response = await axios.put(`https://fakestoreapi.com/products/${id}`, updatedProduct, {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedProduct),
     });
 
-    if (!response.ok) {
-      throw new Error(`Failed to update product with ID ${id}`);
+    if (!response.data || typeof response.data !== "object") {
+      throw new Error("Invalid response from server.");
     }
 
-    console.log(`Product with ID ${id} successfully updated`);
+    return response.data as ModelsSchemaProduct;
   } catch (error) {
-    console.error(`Error updating product with ID ${id}:`, error);
-    throw error;
+    if (error instanceof Error) {
+      console.error(`Error updating product with ID ${id}:`, error.message);
+      throw new Error(`Failed to update product: ${error.message}`);
+    } else {
+      console.error(`Unexpected error updating product with ID ${id}:`, error);
+      throw new Error("Failed to update product: An unexpected error occurred.");
+    }
   }
 };

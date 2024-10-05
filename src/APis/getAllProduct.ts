@@ -1,7 +1,7 @@
-import { ModelsSchemaProduct } from "../models/productModels.ts";
+import axios from "axios";
+import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 
 const cache = new Map<string, ModelsSchemaProduct[]>();
-
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
 export const GetAllProduct = async (): Promise<ModelsSchemaProduct[]> => {
@@ -17,16 +17,16 @@ export const GetAllProduct = async (): Promise<ModelsSchemaProduct[]> => {
 
     debounceTimer = setTimeout(async () => {
       try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        const data = await response.json();
-
-        const formattedData = data.map((product: any) => ({
-          id: product.id,
+        const response = await axios.get("https://fakestoreapi.com/products");
+        const formattedData = response.data.map((product: any) => ({
           title: product.title,
           description: product.description,
+          price: product.price,
+          category: product.category,
           image: product.image,
         }));
 
+        // Menyimpan data terformat dalam cache
         cache.set(cacheKey, formattedData);
         resolve(formattedData);
       } catch (error) {

@@ -1,15 +1,16 @@
-import { DeleteProduct } from "../APis/deleteProduct.ts";
-import { ModelsSchemaProduct } from "../models/productModels.ts";
+import { deleteProduct } from "../APis/deleteProduct";
+import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 
-export const HandleDelete = async (products: any, id: number) => {
+export const handleDelete = async (products: ModelsSchemaProduct[], id: number): Promise<ModelsSchemaProduct[]> => {
+  if (!id) {
+    throw new Error("Product ID is null or undefined");
+  }
+
   try {
-    // Call API to delete the product
-    await DeleteProduct(id); // Ensure this API call works
-
-    // Filter out the deleted product from the local state
-    products.value = products.value.filter((product: ModelsSchemaProduct) => product.id !== id);
-    console.log("Updated products after deletion:", products.value); // Check remaining products
+    await deleteProduct(id);
+    return products.filter((product) => product.id !== id);
   } catch (error) {
     console.error(`Error deleting product with ID ${id}:`, error);
+    throw error;
   }
 };
