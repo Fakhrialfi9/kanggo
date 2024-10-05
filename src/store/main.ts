@@ -29,8 +29,8 @@ export default createStore<State>({
     SET_LOADING(state, isLoading) {
       state.isLoading = isLoading;
     },
-    SET_PRODUCT_TO_EDIT(state, product) {
-      state.productToEdit = product;
+    SET_PRODUCT_TO_EDIT(state, id) {
+      state.productToEdit = id;
     },
     SET_PRODUCT_TO_DELETE(state, id) {
       state.productToDelete = id;

@@ -28,19 +28,17 @@
   const isDeleteModalOpen = computed(() => store.state.isDeleteModalOpen);
   const isEditModalOpen = computed(() => store.state.isEditModalOpen);
 
-  const openEditModal = (product, productName: string) => {
+  const openEditModal = (product) => {
+    console.log("Opening Edit modal for product:", product);
     store.commit("SET_PRODUCT_TO_EDIT", product);
-    store.commit("SET_MODAL_UPDATE_MESSAGE", `Are you sure you want to Edit "${productName}"? .`);
+    store.commit("SET_MODAL_UPDATE_MESSAGE", `Are you sure you want to Edit "${product.title}"?`);
     store.commit("TOGGLE_EDIT_MODAL", true);
   };
 
-  const openDeleteModal = (id: number, title: string) => {
-    console.log("Opening delete modal for product ID:", id);
-    store.commit("SET_PRODUCT_TO_DELETE", id);
-    store.commit(
-      "SET_MODAL_DELETE_MESSAGE",
-      `Are you sure you want to delete "${title}"? If you want to delete, click Delete; if not, click Cancel.`,
-    );
+  const openDeleteModal = (product) => {
+    console.log("Opening delete modal for product ID:", product);
+    store.commit("SET_PRODUCT_TO_DELETE", product.id);
+    store.commit("SET_MODAL_DELETE_MESSAGE", `Are you sure you want to delete "${product.title}"?`);
     store.commit("TOGGLE_DELETE_MODAL", true);
   };
 
@@ -67,8 +65,8 @@
               <CardTitleProduct>{{ product.title }}</CardTitleProduct>
               <CardDescriptionProduct>{{ product.description }}</CardDescriptionProduct>
               <CardButtonCallToActionProduct>
-                <EditProductButton @click="openEditModal(product, product.title)">Edit</EditProductButton>
-                <DeleteProductButton @click="openDeleteModal(product.id, product.title)">Delete</DeleteProductButton>
+                <EditProductButton @click="openEditModal(product)">Edit</EditProductButton>
+                <DeleteProductButton @click="openDeleteModal(product)">Delete</DeleteProductButton>
               </CardButtonCallToActionProduct>
             </CardInformationProduct>
           </CardProduct>

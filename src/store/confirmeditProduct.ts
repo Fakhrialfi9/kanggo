@@ -1,6 +1,7 @@
+// confirmEdit.ts
 import { ActionTree } from "vuex";
 import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
-import { HandleUpdate } from "../handler/updateHandler";
+import { handleUpdate } from "../handler/updateHandler";
 
 export const actions: ActionTree<{ products: ModelsSchemaProduct[] }, any> = {
   async confirmEdit({ commit, state }, updatedProduct: ModelsSchemaProduct) {
@@ -12,7 +13,7 @@ export const actions: ActionTree<{ products: ModelsSchemaProduct[] }, any> = {
     commit("SET_LOADING", true);
 
     try {
-      const result = await HandleUpdate(state.products, updatedProduct.id, updatedProduct);
+      const result = await handleUpdate(state.products, updatedProduct.id, updatedProduct);
 
       commit("UPDATE_PRODUCT_IN_STATE", result);
 

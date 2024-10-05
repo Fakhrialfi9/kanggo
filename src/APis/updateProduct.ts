@@ -1,3 +1,4 @@
+// updateProduct.ts
 import axios from "axios";
 import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 
