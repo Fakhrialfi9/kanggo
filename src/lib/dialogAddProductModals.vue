@@ -1,3 +1,4 @@
+<!-- dialogAddProductModals.vue -->
 <script setup lang="ts">
   import {
     Modals,
@@ -14,6 +15,7 @@
   } from "../assets/style/lib/dialogaddproductmodalsStyle.js";
   import { defineProps, defineEmits, ref } from "vue";
   import { ModelsSchemaProduct } from "../models/modelSchemaProduct.js";
+  import { AddProduct } from "../APIs/getNewProduct";
 
   const props = defineProps<{
     isVisible: boolean;
@@ -21,8 +23,11 @@
     product?: ModelsSchemaProduct;
   }>();
 
-  const productTitle = ref<string>(props.product?.title || "");
-  const productDescription = ref<string>(props.product?.description || "");
+  const productTitle = ref<string>(props.product?.title || "Kanggo");
+  const productDescription = ref<string>(props.product?.description || "Product Kanggo");
+  const productPrice = ref<string>(props.product?.price || "100");
+  const productCategory = ref<string>("Pekerja");
+  const productImage = ref<string>("https://i.pravatar.cc");
 
   const emit = defineEmits(["confirm", "cancel"]);
 
@@ -31,13 +36,25 @@
   };
 
   const confirm = async () => {
-    emit("confirm", {
-      title: productTitle.value,
-      description: productDescription.value,
-    });
+    try {
+      const newProduct = {
+        title: productTitle.value,
+        description: productDescription.value,
+        price: productPrice.value,
+        category: productCategory.value,
+        image: productImage.value,
+      };
+      productTitle.value = "Kanggo";
+      productDescription.value = "Product Kanggo";
 
-    productTitle.value = "";
-    productDescription.value = "";
+      const addedProduct = await AddProduct(newProduct);
+      alert("Product added successfully:", addedProduct);
+      console.log("Product added successfully:", addedProduct);
+
+      emit("confirm", addedProduct);
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
   };
 </script>
 
@@ -50,11 +67,19 @@
       </HeaderDiaglogModals>
 
       <FormEditModalsProduct @submit.prevent="confirm">
-        <InputEditModalsProduct required v-model="productTitle" type="text" name="title" placeholder="Add Title Product" autocomplete="off" />
+        <InputEditModalsProduct required v-model="productTitle" type="text" name="productTitle" placeholder="Add Title Product" autocomplete="off" />
+        <InputEditModalsProduct
+          required
+          v-model="productPrice"
+          type="number"
+          name="productPrice"
+          placeholder="Add Title Product"
+          autocomplete="off" />
+
         <InputDescriptionEditModalsProduct
           required
           v-model="productDescription"
-          name="description"
+          name="productDescription"
           placeholder="Add Description Product"
           autocomplete="off" />
 

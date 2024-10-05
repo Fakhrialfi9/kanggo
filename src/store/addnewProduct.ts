@@ -11,7 +11,9 @@ export const actions: ActionTree<{ products: ModelsSchemaProduct[]; isLoading: b
         return;
       }
 
-      const addedProduct = await HandleAddProduct(state.products, newProduct);
+      const newProductId = Date.now();
+      const addedProduct = await HandleAddProduct(state.products, newProductId, newProduct);
+
       commit("SET_PRODUCTS", [...state.products, addedProduct]);
       commit("SET_MODAL_ADD_PRODUCT_MESSAGE", "Product added successfully.");
     } catch (error) {

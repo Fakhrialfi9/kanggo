@@ -1,3 +1,4 @@
+<!-- NvabarRightSection.vue -->
 <script setup lang="ts">
   import { computed, ref } from "vue";
   import { useStore } from "vuex";
@@ -27,6 +28,6 @@
   <AddNewProductModal
     :isVisible="isModalVisible"
     :message="modalMessage"
-    @confirm="store.dispatch('addNewProduct', { title: productTitle.valueOf, description: productDescription.valueOf })"
+    @confirm="(newProduct) => store.dispatch('addNewProduct', newProduct)"
     @cancel="store.commit('TOGGLE_ADD_PRODUCT_MODAL', false)" />
 </template>

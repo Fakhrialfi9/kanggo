@@ -79,13 +79,8 @@
       </HeaderDiaglogModals>
 
       <FormEditModalsProduct ref="productForm" @submit.prevent="confirm">
-        <InputEditModalsProduct required v-model="productTitle" type="text" name="title" placeholder="Edit Title" autocomplete="off" />
-        <InputDescriptionEditModalsProduct
-          required
-          v-model="productDescription"
-          name="description"
-          placeholder="Edit Description"
-          autocomplete="off" />
+        <InputEditModalsProduct v-model="productTitle" type="text" name="title" placeholder="Edit Title" autocomplete="off" />
+        <InputDescriptionEditModalsProduct v-model="productDescription" name="description" placeholder="Edit Description" autocomplete="off" />
 
         <CallToActionDiaglogModals>
           <CancelProductButton @click="cancel" type="button">Cancel</CancelProductButton>

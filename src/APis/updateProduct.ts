@@ -15,7 +15,7 @@ export const UpdateProduct = async (id: number, updatedProduct: ModelsSchemaProd
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedProduct),
+      body: JSON.stringify(updatedProduct), // Send the entire updated product
     });
 
     if (!response.ok) {

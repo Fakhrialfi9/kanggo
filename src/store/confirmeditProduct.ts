@@ -27,7 +27,7 @@ export const actions: ActionTree<{ products: ModelsSchemaProduct[] }, any> = {
         console.log("Product updated successfully:", updatedProductDetails);
         console.log("New Title:", updatedProductDetails.title);
         console.log("New Description:", updatedProductDetails.description);
-        alert(`Product updated successfully: ${updatedProductDetails.title}, ${updatedProductDetails.description}`);
+        alert(`Product updated successfully`);
       } else {
         console.error("Product not found after update.");
         commit("SET_MODAL_UPDATE_MESSAGE", "Product not found after update.");
