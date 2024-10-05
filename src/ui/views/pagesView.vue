@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { onMounted, computed } from "vue";
   import { useStore } from "vuex";
+  import { debounce } from "lodash";
   import { Container } from "../../base/style/containerStyle.js";
   import {
     Main,
@@ -24,19 +25,28 @@
 
   const store = useStore();
   const searchQuery = computed(() => store.state.searchQuery);
+  const filteredProducts = computed(() => store.getters.filteredProducts);
   const products = computed(() => store.getters.filteredProducts);
   const isDeleteModalOpen = computed(() => store.state.isDeleteModalOpen);
   const isEditModalOpen = computed(() => store.state.isEditModalOpen);
 
+  const performSearch = (value) => {
+    store.dispatch("performSearch", value);
+  };
+
+  const handleSearch = debounce((value) => {
+    store.commit("SET_SEARCH_QUERY", value);
+  }, 300);
+
   const openEditModal = (product) => {
     console.log("Opening Edit modal for product:", product);
     store.commit("SET_PRODUCT_TO_EDIT", product);
-    store.commit("SET_MODAL_UPDATE_MESSAGE", `Are you sure you want to Edit "${product.title}"?`);
+    store.commit("SET_MODAL_UPDATE_MESSAGE", `Are you sure you want to edit "${product.title}"?`);
     store.commit("TOGGLE_EDIT_MODAL", true);
   };
 
   const openDeleteModal = (product) => {
-    console.log("Opening delete modal for product ID:", product);
+    console.log("Opening Delete modal for product ID:", product);
     store.commit("SET_PRODUCT_TO_DELETE", product.id);
     store.commit("SET_MODAL_DELETE_MESSAGE", `Are you sure you want to delete "${product.title}"?`);
     store.commit("TOGGLE_DELETE_MODAL", true);
@@ -52,17 +62,18 @@
     <Container>
       <Content>
         <FormSearchProduct>
-          <TitleFormSearchProduct>Product List</TitleFormSearchProduct>
-          <SearchBarsProduct v-model="searchQuery" type="text" placeholder="Search product..." />
+          <TitleFormSearchProduct>Search</TitleFormSearchProduct>
+          <SearchBarsProduct :value="searchQuery" type="text" placeholder="Search product..." @input="(event) => performSearch(event.target.value)" />
         </FormSearchProduct>
 
         <WrapCardProduct>
-          <CardProduct v-for="product in products" :key="product.id">
+          <CardProduct v-for="product in filteredProducts" :key="product.id">
             <CardImageProduct>
               <ImageProduct :src="product.image" :alt="product.title" />
             </CardImageProduct>
             <CardInformationProduct>
               <CardTitleProduct>{{ product.title }}</CardTitleProduct>
+              <CardTitleProduct>{{ product.price }}</CardTitleProduct>
               <CardDescriptionProduct>{{ product.description }}</CardDescriptionProduct>
               <CardButtonCallToActionProduct>
                 <EditProductButton @click="openEditModal(product)">Edit</EditProductButton>
@@ -70,6 +81,7 @@
               </CardButtonCallToActionProduct>
             </CardInformationProduct>
           </CardProduct>
+          <p v-if="filteredProducts.length === 0">No products found.</p>
         </WrapCardProduct>
       </Content>
 

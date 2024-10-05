@@ -10,6 +10,7 @@ export const AddProduct = async (newProduct: ModelsSchemaProduct): Promise<Model
     const response = await axios.post(
       API_URL,
       {
+        id: newProduct.id,
         title: newProduct.title,
         description: newProduct.description,
         price: newProduct.price,

@@ -15,7 +15,7 @@ export const handleUpdate = async (
     await UpdateProduct(id, updatedProduct);
     return products.map((product) => (product.id === id ? { ...product, ...updatedProduct } : product));
   } catch (error) {
-    console.error(`Error saat mengupdate produk dengan ID ${id}:`, error);
+    console.error(`Error updating product with ID ${id}:`, error);
     throw error;
   }
 };

@@ -1,4 +1,4 @@
-//confirmdeleteProduct.ts
+// confirmDeleteProduct.ts
 import { ActionTree } from "vuex";
 import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 import { deleteProduct } from "../APis/deleteProduct";
@@ -13,9 +13,15 @@ export const actions: ActionTree<{ products: ModelsSchemaProduct[]; productToDel
       return;
     }
 
+    const productToDelete = state.products.find((product) => product.id === id);
+    const productTitle = productToDelete ? productToDelete.title : "Product";
+
     try {
       await deleteProduct(id);
       commit("REMOVE_PRODUCT_FROM_STATE", id);
+
+      alert(`Product with title "${productTitle}" and ID ${id}, has been successfully deleted.`);
+
       commit("SET_MODAL_DELETE_MESSAGE", "Product successfully deleted.");
     } catch (error) {
       let errorMessage = "An unexpected error occurred.";

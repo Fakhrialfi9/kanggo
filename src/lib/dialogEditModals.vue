@@ -47,7 +47,16 @@
     emit("cancel");
   };
 
+  const errorMessage = ref("");
+
   const confirm = () => {
+    if (!productTitle.value || !productDescription.value) {
+      errorMessage.value = "All fields must be filled.";
+      return;
+    } else {
+      errorMessage.value = "";
+    }
+
     const updatedProduct: ModelsSchemaProduct = {
       id: props.product!.id,
       title: productTitle.value,

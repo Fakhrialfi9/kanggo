@@ -12,6 +12,7 @@
     "@types/node": "^22.7.4",
     "@vue-styled-components/core": "^1.7.3",
     "axios": "^1.7.7",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.447.0",
     "lucide-vue-next": "^0.447.0",
     "vue": "^3.5.10",
