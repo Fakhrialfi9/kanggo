@@ -1,15 +1,29 @@
+const API_URL = import.meta.env.VITE_APIS_FAKE_PRODUCT;
+
 export const deleteProduct = async (id: number): Promise<void> => {
-  if (!id) {
+  if (id === undefined || id === null) {
     throw new Error("Product ID is null or undefined");
   }
 
-  const response = await fetch(`https://fakestoreapi.com/products/${id}`, {
-    method: "DELETE",
-  });
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  if (!response.ok) {
-    throw new Error(`Failed to delete product with ID ${id}. Status: ${response.status}`);
+    if (!response.ok) {
+      throw new Error(`Failed to delete product with ID ${id}. Status: ${response.status}`);
+    }
+
+    console.log(`Product with ID ${id} successfully deleted`);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(`Error deleting product: ${error.message}`);
+    } else {
+      console.error(`Unknown error occurred:`, error);
+    }
+    throw error;
   }
-
-  console.log(`Product with ID ${id} successfully deleted`);
 };

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "noImplicitAny": false,
+    "types": ["node", "vite/client"],
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "node",

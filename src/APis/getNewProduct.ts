@@ -1,10 +1,14 @@
 import axios from "axios";
 import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 
+const API_URL = import.meta.env.VITE_APIS_FAKE_PRODUCT;
+
 export const AddProduct = async (newProduct: ModelsSchemaProduct): Promise<ModelsSchemaProduct> => {
+  !API_URL;
+
   try {
     const response = await axios.post(
-      "https://fakestoreapi.com/products",
+      API_URL,
       {
         title: newProduct.title,
         description: newProduct.description,
