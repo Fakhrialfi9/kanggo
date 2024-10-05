@@ -22,6 +22,7 @@ export const GetAllProduct = async (): Promise<ModelsSchemaProduct[]> => {
         const response = await axios.get(`${API_URL}`);
 
         const formattedData: ModelsSchemaProduct[] = response.data.map((product: any) => ({
+          id: product.id,
           title: product.title,
           description: product.description,
           price: product.price,

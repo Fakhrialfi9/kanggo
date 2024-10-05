@@ -1,3 +1,4 @@
+//deleteProduct.ts
 const API_URL = import.meta.env.VITE_APIS_FAKE_PRODUCT;
 
 export const deleteProduct = async (id: number): Promise<void> => {

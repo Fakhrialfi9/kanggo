@@ -14,8 +14,9 @@
   const props = defineProps({
     isVisible: Boolean,
     message: String,
-    productId: Number,
+    id: Number,
   });
+
   const emit = defineEmits();
 
   const cancelDelete = () => {
@@ -23,7 +24,11 @@
   };
 
   const confirmDelete = () => {
-    emit("confirm", props.productId);
+    if (props.id === null || props.id === undefined) {
+      console.error("No product ID to delete");
+      return;
+    }
+    emit("confirm", props.id);
   };
 </script>
 

@@ -1,3 +1,4 @@
+//main.ts
 import { createStore } from "vuex";
 import { State } from "../models/mdelsShemaState";
 import { actions as loadProductsActions } from "./loadProduct";
@@ -31,7 +32,7 @@ export default createStore<State>({
     SET_PRODUCT_TO_EDIT(state, product) {
       state.productToEdit = product;
     },
-    SET_PRODUCT_TO_DELETE(state, id: number | null) {
+    SET_PRODUCT_TO_DELETE(state, id) {
       state.productToDelete = id;
     },
     SET_MODAL_DELETE_MESSAGE(state, message) {
@@ -61,8 +62,8 @@ export default createStore<State>({
         state.products.splice(index, 1, updatedProduct);
       }
     },
-    REMOVE_PRODUCT_FROM_STATE(state, productId) {
-      state.products = state.products.filter((product) => product.id !== productId);
+    REMOVE_PRODUCT_FROM_STATE(state, id) {
+      state.products = state.products.filter((product) => product.id !== id);
     },
   },
 

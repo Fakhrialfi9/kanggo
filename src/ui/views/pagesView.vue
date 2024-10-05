@@ -23,7 +23,6 @@
   import EditModal from "../../lib/dialogEditModals.vue";
 
   const store = useStore();
-
   const searchQuery = computed(() => store.state.searchQuery);
   const products = computed(() => store.getters.filteredProducts);
   const isDeleteModalOpen = computed(() => store.state.isDeleteModalOpen);
@@ -35,16 +34,16 @@
     store.commit("TOGGLE_EDIT_MODAL", true);
   };
 
-  const openDeleteModla = (productId: number, productName: string) => {
-    store.commit("SET_PRODUCT_TO_DELETE", productId);
+  const openDeleteModal = (id: number, title: string) => {
+    console.log("Opening delete modal for product ID:", id);
+    store.commit("SET_PRODUCT_TO_DELETE", id);
     store.commit(
       "SET_MODAL_DELETE_MESSAGE",
-      `Are you sure you want to delete "${productName}"? If you want to delete, click Delete; if not, click Cancel.`,
+      `Are you sure you want to delete "${title}"? If you want to delete, click Delete; if not, click Cancel.`,
     );
     store.commit("TOGGLE_DELETE_MODAL", true);
   };
 
-  // Load products on mount
   onMounted(() => {
     store.dispatch("loadProducts");
   });
@@ -68,8 +67,8 @@
               <CardTitleProduct>{{ product.title }}</CardTitleProduct>
               <CardDescriptionProduct>{{ product.description }}</CardDescriptionProduct>
               <CardButtonCallToActionProduct>
-                <EditProductButton @click="openEditModal(product.id, product.title)">Edit</EditProductButton>
-                <DeleteProductButton @click="() => openDeleteModla(product.id, product.title)">Delete</DeleteProductButton>
+                <EditProductButton @click="openEditModal(product, product.title)">Edit</EditProductButton>
+                <DeleteProductButton @click="openDeleteModal(product.id, product.title)">Delete</DeleteProductButton>
               </CardButtonCallToActionProduct>
             </CardInformationProduct>
           </CardProduct>
@@ -79,8 +78,8 @@
       <DeleteModal
         :isVisible="isDeleteModalOpen"
         :message="store.state.modalDeleteMessage"
-        :productId="store.state.productToDelete"
-        @confirm="store.dispatch('confirmDelete', store.state.productToDelete)"
+        :id="store.state.productToDelete"
+        @confirm="() => store.dispatch('confirmDelete', store.state.productToDelete)"
         @cancel="store.commit('TOGGLE_DELETE_MODAL', false)" />
 
       <EditModal
