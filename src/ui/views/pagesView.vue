@@ -1,3 +1,4 @@
+<!-- pagesView.vue -->
 <script setup lang="ts">
   import { onMounted, computed } from "vue";
   import { useStore } from "vuex";

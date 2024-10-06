@@ -5,7 +5,6 @@ const API_URL = import.meta.env.VITE_APIS_FAKE_PRODUCT;
 
 export const UpdateProduct = async (id: number, updatedProduct: ModelsSchemaProduct): Promise<ModelsSchemaProduct> => {
   try {
-    // Validate the updated product fields
     if (!updatedProduct.title || !updatedProduct.description) {
       throw new Error("Missing required fields: title and description are required.");
     }
@@ -15,7 +14,7 @@ export const UpdateProduct = async (id: number, updatedProduct: ModelsSchemaProd
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updatedProduct), // Send the entire updated product
+      body: JSON.stringify(updatedProduct),
     });
 
     if (!response.ok) {

@@ -12,7 +12,7 @@
     CancelProductButton,
     SaveAddProductButton,
   } from "../assets/style/lib/dialogaddproductmodalsStyle.js";
-  import { defineProps, defineEmits, ref } from "vue";
+  import { defineProps, defineEmits, ref, watch } from "vue";
   import { ModelsSchemaProduct } from "../models/modelSchemaProduct.js";
   import { AddProduct } from "../APis/getNewProduct.ts";
 
@@ -23,18 +23,37 @@
   }>();
 
   const productTitle = ref<string>(props.product?.title || "Kanggo");
-  const productDescription = ref<string>(props.product?.description || "Product Kanggo");
   const productPrice = ref<number>(Number(props.product?.price) || 100);
+  const productDescription = ref<string>(props.product?.description || "Product Kanggo");
   const productCategory = ref<string>("Pekerja");
   const productImage = ref<string>("https://i.pravatar.cc");
 
   const emit = defineEmits(["confirm", "cancel"]);
+
+  watch(
+    () => props.isVisible,
+    (newValue) => {
+      if (!newValue) {
+        resetForm();
+      }
+    },
+  );
+
+  const resetForm = () => {
+    productTitle.value = props.product?.title || "Kanggo";
+    productPrice.value = Number(props.product?.price) || 100;
+    productDescription.value = props.product?.description || "Product Kanggo";
+    productCategory.value = "Pekerja";
+    productImage.value = "https://i.pravatar.cc";
+  };
 
   const cancel = () => {
     emit("cancel");
   };
 
   const confirm = async () => {
+    if (!validateInputs()) return;
+
     try {
       const newProduct: Omit<ModelsSchemaProduct, "id"> = {
         title: productTitle.value,
@@ -53,6 +72,14 @@
       console.error("Error adding product:", error);
       alert("Failed to add product. Please try again.");
     }
+  };
+
+  const validateInputs = () => {
+    if (!productTitle.value || !productDescription.value || !productPrice.value) {
+      alert("Please fill in all required fields.");
+      return false;
+    }
+    return true;
   };
 </script>
 

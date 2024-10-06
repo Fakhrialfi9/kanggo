@@ -7,7 +7,6 @@
   import AddNewProductModal from "../../../../lib/dialogAddProductModals.vue";
 
   const store = useStore();
-
   const isModalVisible = computed(() => store.state.isModalVisible);
   const modalMessage = computed(() => store.state.modalAddProductMessage);
 
