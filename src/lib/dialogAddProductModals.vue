@@ -1,4 +1,3 @@
-<!-- dialogAddProductModals.vue -->
 <script setup lang="ts">
   import {
     Modals,
@@ -15,7 +14,7 @@
   } from "../assets/style/lib/dialogaddproductmodalsStyle.js";
   import { defineProps, defineEmits, ref } from "vue";
   import { ModelsSchemaProduct } from "../models/modelSchemaProduct.js";
-  import { AddProduct } from "@/APIs/getNewProduct";
+  import { AddProduct } from "../APIs/getNewProduct.ts";
 
   const props = defineProps<{
     isVisible: boolean;
@@ -25,7 +24,7 @@
 
   const productTitle = ref<string>(props.product?.title || "Kanggo");
   const productDescription = ref<string>(props.product?.description || "Product Kanggo");
-  const productPrice = ref<string>(props.product?.price || "100");
+  const productPrice = ref<number>(Number(props.product?.price) || 100);
   const productCategory = ref<string>("Pekerja");
   const productImage = ref<string>("https://i.pravatar.cc");
 
@@ -37,23 +36,22 @@
 
   const confirm = async () => {
     try {
-      const newProduct = {
+      const newProduct: Omit<ModelsSchemaProduct, "id"> = {
         title: productTitle.value,
         description: productDescription.value,
         price: productPrice.value,
         category: productCategory.value,
         image: productImage.value,
       };
-      productTitle.value = "Kanggo";
-      productDescription.value = "Product Kanggo";
 
       const addedProduct = await AddProduct(newProduct);
-      alert("Product added successfully:", addedProduct);
+      alert("Product added successfully");
       console.log("Product added successfully:", addedProduct);
 
       emit("confirm", addedProduct);
     } catch (error) {
       console.error("Error adding product:", error);
+      alert("Failed to add product. Please try again.");
     }
   };
 </script>
@@ -73,9 +71,8 @@
           v-model="productPrice"
           type="number"
           name="productPrice"
-          placeholder="Add Title Product"
+          placeholder="Add Product Price"
           autocomplete="off" />
-
         <InputDescriptionEditModalsProduct
           required
           v-model="productDescription"
