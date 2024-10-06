@@ -1,5 +1,5 @@
 // addproductHandler.ts
-import { AddProduct } from "../APis/getNewProduct";
+import { AddProduct } from "../APIs/getNewProduct";
 import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 
 export const HandleAddProduct = async (

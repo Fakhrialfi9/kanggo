@@ -1,7 +1,7 @@
 // getNewProduct.ts
 import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 
-const API_URL = "https://fakestoreapi.com/products";
+const API_URL = import.meta.env.VITE_APIS_FAKE_PRODUCT;
 
 export const AddProduct = async (newProduct: Omit<ModelsSchemaProduct, "id">): Promise<ModelsSchemaProduct> => {
   try {

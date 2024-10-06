@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "noImplicitAny": false,
-    "types": ["node", "vite/client"],
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node", "vite/client"],
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node"
   }
 }
