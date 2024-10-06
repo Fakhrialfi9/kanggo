@@ -20,7 +20,7 @@ export const actions: ActionTree<{ products: ModelsSchemaProduct[]; productToDel
       await deleteProduct(id);
       commit("REMOVE_PRODUCT_FROM_STATE", id);
 
-      alert(`Product with title "${productTitle}" and ID ${id}, has been successfully deleted.`);
+      alert(`has been successfully deleted.`);
 
       commit("SET_MODAL_DELETE_MESSAGE", "Product successfully deleted.");
     } catch (error) {
