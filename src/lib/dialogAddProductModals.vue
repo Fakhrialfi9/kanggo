@@ -24,7 +24,9 @@
 
   const productTitle = ref<string>(props.product?.title || "Kanggo");
   const productPrice = ref<number>(Number(props.product?.price) || 100);
-  const productDescription = ref<string>(props.product?.description || "Product Kanggo");
+  const productDescription = ref<string>(
+    props.product?.description || "Product Kanggo",
+  );
   const productCategory = ref<string>("Pekerja");
   const productImage = ref<string>("https://i.pravatar.cc");
 
@@ -75,7 +77,11 @@
   };
 
   const validateInputs = () => {
-    if (!productTitle.value || !productDescription.value || !productPrice.value) {
+    if (
+      !productTitle.value ||
+      !productDescription.value ||
+      !productPrice.value
+    ) {
       alert("Please fill in all required fields.");
       return false;
     }
@@ -92,7 +98,13 @@
       </HeaderDiaglogModals>
 
       <FormEditModalsProduct @submit.prevent="confirm">
-        <InputEditModalsProduct required v-model="productTitle" type="text" name="productTitle" placeholder="Add Title Product" autocomplete="off" />
+        <InputEditModalsProduct
+          required
+          v-model="productTitle"
+          type="text"
+          name="productTitle"
+          placeholder="Add Title Product"
+          autocomplete="off" />
         <InputEditModalsProduct
           required
           v-model="productPrice"
@@ -108,8 +120,12 @@
           autocomplete="off" />
 
         <CallToActionDiaglogModals>
-          <CancelProductButton @click="cancel" type="button">Cancel</CancelProductButton>
-          <SaveAddProductButton type="submit">Add New Product</SaveAddProductButton>
+          <CancelProductButton @click="cancel" type="button"
+            >Cancel</CancelProductButton
+          >
+          <SaveAddProductButton type="submit"
+            >Add New Product</SaveAddProductButton
+          >
         </CallToActionDiaglogModals>
       </FormEditModalsProduct>
     </DiaglogModals>
