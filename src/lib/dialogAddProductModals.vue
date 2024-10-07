@@ -14,7 +14,7 @@
   } from "../assets/style/lib/dialogaddproductmodalsStyle.js";
   import { defineProps, defineEmits, ref, watch } from "vue";
   import { ModelsSchemaProduct } from "../models/modelSchemaProduct.js";
-  import { AddProduct } from "../APis/getNewProduct.ts";
+  import { AddProduct } from "../APis/getNewProduct";
 
   const props = defineProps<{
     isVisible: boolean;

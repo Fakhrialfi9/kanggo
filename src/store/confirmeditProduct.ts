@@ -1,11 +1,15 @@
-// confirmEdit.ts
 import { ActionTree } from "vuex";
 import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 import { handleUpdate } from "../handler/updateHandler";
 
 export const actions: ActionTree<{ products: ModelsSchemaProduct[] }, any> = {
   async confirmEdit({ commit, state }, updatedProduct: ModelsSchemaProduct) {
-    if (!updatedProduct || !updatedProduct.id || !updatedProduct.title || !updatedProduct.description) {
+    if (
+      !updatedProduct ||
+      !updatedProduct.id ||
+      !updatedProduct.title ||
+      !updatedProduct.description
+    ) {
       console.error("Invalid product, all fields must be filled.");
       commit("SET_MODAL_UPDATE_MESSAGE", "All fields must be filled.");
       return;
@@ -14,10 +18,16 @@ export const actions: ActionTree<{ products: ModelsSchemaProduct[] }, any> = {
     commit("SET_LOADING", true);
 
     try {
-      const result = await handleUpdate(state.products, updatedProduct.id, updatedProduct);
+      const result = await handleUpdate(
+        state.products,
+        updatedProduct.id,
+        updatedProduct,
+      );
 
       const updatedProducts = Array.isArray(result) ? result : [result];
-      const updatedProductDetails = updatedProducts.find((product) => product.id === updatedProduct.id);
+      const updatedProductDetails = updatedProducts.find(
+        (product) => product.id === updatedProduct.id,
+      );
 
       if (updatedProductDetails) {
         commit("UPDATE_PRODUCT_IN_STATE", updatedProductDetails);

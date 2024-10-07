@@ -1,4 +1,3 @@
-//mutations.ts
 import { MutationTree } from "vuex";
 import { State } from "../models/mdelsShemaState";
 
@@ -37,7 +36,9 @@ export const mutations: MutationTree<State> = {
     state.modalAddProductMessage = message;
   },
   UPDATE_PRODUCT_IN_STATE(state, updatedProduct) {
-    const index = state.products.findIndex((product) => product.id === updatedProduct.id);
+    const index = state.products.findIndex(
+      (product) => product.id === updatedProduct.id,
+    );
     if (index !== -1) {
       state.products.splice(index, 1, updatedProduct);
     }

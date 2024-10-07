@@ -1,4 +1,3 @@
-//updateHandler.ts
 import { UpdateProduct } from "../APis/updateProduct";
 import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 
@@ -13,7 +12,9 @@ export const handleUpdate = async (
 
   try {
     await UpdateProduct(id, updatedProduct);
-    return products.map((product) => (product.id === id ? { ...product, ...updatedProduct } : product));
+    return products.map((product) =>
+      product.id === id ? { ...product, ...updatedProduct } : product,
+    );
   } catch (error) {
     console.error(`Error updating product with ID ${id}:`, error);
     throw error;

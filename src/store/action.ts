@@ -1,4 +1,3 @@
-// actions.ts
 import { ActionTree } from "vuex";
 import { State } from "../models/mdelsShemaState";
 import { actions as loadProductsActions } from "./getallProduct";

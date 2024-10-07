@@ -1,4 +1,3 @@
-<!-- dialogEditModals.vue -->
 <script setup lang="ts">
   import {
     Modals,
@@ -12,9 +11,9 @@
     CallToActionDiaglogModals,
     CancelProductButton,
     SaveEditProductButton,
-  } from "../assets/style/lib/dialogupdatemodalsStyle.js";
+  } from "../assets/style/lib/dialogupdatemodalsStyle";
   import { defineProps, defineEmits, computed, ref } from "vue";
-  import { ModelsSchemaProduct } from "../models/modelSchemaProduct.js";
+  import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 
   const productForm = ref<HTMLElement | null>(null);
 
@@ -65,7 +64,11 @@
     console.log("Product Price:", productPrice.value);
     console.log("Product Description:", productDescription.value);
 
-    if (!productTitle.value || !productDescription.value || !productPrice.value) {
+    if (
+      !productTitle.value ||
+      !productDescription.value ||
+      !productPrice.value
+    ) {
       errorMessage.value = "All fields must be filled.";
       return;
     } else {
@@ -77,8 +80,8 @@
       title: productTitle.value,
       price: productPrice.value,
       description: productDescription.value,
-      category: props.product.category,
-      image: props.product.image,
+      category: "",
+      image: "",
     };
 
     emit("confirm", updatedProduct);
@@ -94,12 +97,28 @@
       </HeaderDiaglogModals>
 
       <FormEditModalsProduct ref="productForm" @submit.prevent="confirm">
-        <InputEditModalsProduct v-model="productTitle" type="text" name="productTitle" placeholder="Edit Title" autocomplete="off" />
-        <InputEditModalsProduct v-model="productPrice" type="number" name="productPrice" placeholder="Edit Price" autocomplete="off" />
-        <InputDescriptionEditModalsProduct v-model="productDescription" name="productDescription" placeholder="Edit Description" autocomplete="off" />
+        <InputEditModalsProduct
+          v-model="productTitle"
+          type="text"
+          name="productTitle"
+          placeholder="Edit Title"
+          autocomplete="off" />
+        <InputEditModalsProduct
+          v-model="productPrice"
+          type="number"
+          name="productPrice"
+          placeholder="Edit Price"
+          autocomplete="off" />
+        <InputDescriptionEditModalsProduct
+          v-model="productDescription"
+          name="productDescription"
+          placeholder="Edit Description"
+          autocomplete="off" />
 
         <CallToActionDiaglogModals>
-          <CancelProductButton @click="cancel" type="button">Cancel</CancelProductButton>
+          <CancelProductButton @click="cancel" type="button"
+            >Cancel</CancelProductButton
+          >
           <SaveEditProductButton type="submit">Save Edit</SaveEditProductButton>
         </CallToActionDiaglogModals>
       </FormEditModalsProduct>

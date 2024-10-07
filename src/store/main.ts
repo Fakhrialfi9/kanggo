@@ -1,4 +1,3 @@
-// main.ts
 import { createStore } from "vuex";
 import { State } from "../models/mdelsShemaState";
 import { mutations } from "./mutations";
@@ -25,7 +24,9 @@ export default createStore<State>({
   getters: {
     filteredProducts: (state) => {
       if (state.searchQuery) {
-        return state.products.filter((product) => product.title.toLowerCase().includes(state.searchQuery.toLowerCase()));
+        return state.products.filter((product) =>
+          product.title.toLowerCase().includes(state.searchQuery.toLowerCase()),
+        );
       }
       return state.products;
     },

@@ -1,8 +1,10 @@
-//deleteHandler.ts
 import { deleteProduct } from "../APis/deleteProduct";
 import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 
-export const handleDelete = async (products: ModelsSchemaProduct[], id: number): Promise<ModelsSchemaProduct[]> => {
+export const handleDelete = async (
+  products: ModelsSchemaProduct[],
+  id: number,
+): Promise<ModelsSchemaProduct[]> => {
   if (!id) {
     throw new Error("Product ID is null or undefined");
   }

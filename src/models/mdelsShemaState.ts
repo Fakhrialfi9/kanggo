@@ -1,4 +1,3 @@
-//mdelsShemaState.ts
 import { ModelsSchemaProduct } from "./modelSchemaProduct";
 
 export interface State {

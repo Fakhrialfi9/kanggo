@@ -1,10 +1,8 @@
-// addproductHandler.ts
 import { AddProduct } from "../APis/getNewProduct";
 import { ModelsSchemaProduct } from "../models/modelSchemaProduct";
 
 export const HandleAddProduct = async (
   products: ModelsSchemaProduct[],
-  id: number,
   newProduct: ModelsSchemaProduct,
 ): Promise<ModelsSchemaProduct[]> => {
   if (!newProduct) {
