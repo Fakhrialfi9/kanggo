@@ -21,20 +21,24 @@ export const GetAllProduct = async (): Promise<ModelsSchemaProduct[]> => {
       try {
         const response = await axios.get(`${API_URL}`);
 
-        const formattedData: ModelsSchemaProduct[] = response.data.map((product: any) => ({
-          id: product.id,
-          title: product.title,
-          description: product.description,
-          price: product.price,
-          category: product.category,
-          image: product.image,
-        }));
+        const formattedData: ModelsSchemaProduct[] = response.data.map(
+          (product: any) => ({
+            id: product.id,
+            title: product.title,
+            description: product.description,
+            price: product.price,
+            category: product.category,
+            image: product.image,
+          }),
+        );
 
         cache.set(cacheKey, formattedData);
         resolve(formattedData);
       } catch (error) {
         console.error("Error fetching products:", error);
-        reject(error instanceof Error ? error : new Error("Unknown error occurred"));
+        reject(
+          error instanceof Error ? error : new Error("Unknown error occurred"),
+        );
       }
     }, 300);
   });

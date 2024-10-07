@@ -1,3 +1,6 @@
+import styled, { createGlobalStyle } from "@vue-styled-components/core";
+
+const GlobalStyle = createGlobalStyle`
 *,
 *::before,
 *::after {
@@ -121,3 +124,5 @@ img {
   user-select: none !important;
   pointer-events: none !important;
 }
+
+`;
