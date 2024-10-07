@@ -1,4 +1,3 @@
-//deleteProduct.ts
 const API_URL = import.meta.env.VITE_APIS_FAKE_PRODUCT;
 
 export const deleteProduct = async (id: number): Promise<void> => {
@@ -15,7 +14,9 @@ export const deleteProduct = async (id: number): Promise<void> => {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to delete product with ID ${id}. Status: ${response.status}`);
+      throw new Error(
+        `Failed to delete product with ID ${id}. Status: ${response.status}`,
+      );
     }
 
     console.log(`Product with ID ${id} successfully deleted`);
